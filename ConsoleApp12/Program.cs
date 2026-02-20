@@ -2,7 +2,7 @@
 
 class BankTerminal
 {
-    public Action<int> OnMoneyWithdraw;
+    public event Action<int> OnMoneyWithdraw;
 
     public void Withdraw(int amount)
     {
@@ -18,11 +18,10 @@ class Program
         BankTerminal terminal = new BankTerminal();
 
         terminal.OnMoneyWithdraw += amount =>
-            Console.WriteLine($"Повідомлення: знято {amount} грн");
+            Console.WriteLine($"Логування: знято {amount} грн");
         
-        terminal.OnMoneyWithdraw = null;
-        
-        terminal.OnMoneyWithdraw?.Invoke(77777);
+        terminal.OnMoneyWithdraw = null;      
+        terminal.OnMoneyWithdraw?.Invoke(500); 
 
         terminal.Withdraw(500);
     }
