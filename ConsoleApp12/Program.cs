@@ -8,7 +8,8 @@ class Program
 
         for (int i = 1; i <= 5; i++)
         {
-            actions.Add(() => Console.WriteLine(i));
+            int copy = i;
+            actions.Add(() => Console.WriteLine(copy));
         }
 
         foreach (var action in actions)
