@@ -1,28 +1,22 @@
 ﻿using System;
 
-class BankTerminal
-{
-    public event Action<int> OnMoneyWithdraw;
-
-    public void Withdraw(int amount)
-    {
-        Console.WriteLine($"Знято {amount} грн");
-        OnMoneyWithdraw?.Invoke(amount);
-    }
-}
-
 class Program
 {
     static void Main()
     {
-        BankTerminal terminal = new BankTerminal();
+        Func<double, double> discountCalculator = null;
 
-        terminal.OnMoneyWithdraw += amount =>
-            Console.WriteLine($"Логування: знято {amount} грн");
-        
-        terminal.OnMoneyWithdraw = null;      
-        terminal.OnMoneyWithdraw?.Invoke(500); 
+        discountCalculator += price => price * 0.95;  
+        discountCalculator += price => price * 0.90;  
+        discountCalculator += price => price - 100;   
 
-        terminal.Withdraw(500);
+        double price = 1000;
+
+        foreach (Func<double, double> discount in discountCalculator.GetInvocationList())
+        {
+            price = discount(price);
+        }
+
+        Console.WriteLine($"Фінальна ціна: {price}");
     }
 }
