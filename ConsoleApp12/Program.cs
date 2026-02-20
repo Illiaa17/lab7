@@ -1,20 +1,29 @@
 ﻿using System;
 
+class BankTerminal
+{
+    public Action<int> OnMoneyWithdraw;
+
+    public void Withdraw(int amount)
+    {
+        Console.WriteLine($"Знято {amount} грн");
+        OnMoneyWithdraw?.Invoke(amount);
+    }
+}
+
 class Program
 {
     static void Main()
     {
-        List<Action> actions = new List<Action>();
+        BankTerminal terminal = new BankTerminal();
 
-        for (int i = 1; i <= 5; i++)
-        {
-            int copy = i;
-            actions.Add(() => Console.WriteLine(copy));
-        }
+        terminal.OnMoneyWithdraw += amount =>
+            Console.WriteLine($"Повідомлення: знято {amount} грн");
+        
+        terminal.OnMoneyWithdraw = null;
+        
+        terminal.OnMoneyWithdraw?.Invoke(77777);
 
-        foreach (var action in actions)
-        {
-            action();
-        }
+        terminal.Withdraw(500);
     }
 }
